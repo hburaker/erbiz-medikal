@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import { site, nav, categories, telLink, whatsappLink } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <Logo light />
+      <p>{site.slogan}. Ankara genelinde medikal ürün kiralama ve satışında hızlı teslimat, profesyonel kurulum.</p>
+    </div>
+    <div>
+      <h4>Hızlı Erişim</h4>
+      <ul>{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+    </div>
+    <div>
+      <h4>Ürün Grupları</h4>
+      <ul class="two">{categories.map((c) => <li><a href="#urunler">{c.title}</a></li>)}</ul>
+    </div>
+    <div>
+      <h4>İletişim</h4>
+      <ul>
+        <li><a href={telLink}>{site.phoneDisplay}</a></li>
+        <li><a href={whatsappLink} target="_blank" rel="noopener">WhatsApp hattı</a></li>
+        <li><a href={site.mapsUrl} target="_blank" rel="noopener">{site.address}</a></li>
+        <li>{site.hours}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <span>© {year} {site.name}. Tüm hakları saklıdır.</span>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--navy); color: #94a3b8; padding: 72px 0 0; margin-top: 24px; }
+  .footer__grid { display: grid; grid-template-columns: 1.3fr .8fr 1.4fr 1.1fr; gap: 40px; }
+  .footer__brand { display: grid; gap: 16px; align-content: start; }
+  h4 { color: #fff; margin: 0 0 16px; font-size: 1rem; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: .95rem; }
+  ul.two { grid-template-columns: 1fr 1fr; column-gap: 16px; }
+  a:hover { color: var(--teal-300); }
+  .footer__bottom { border-top: 1px solid rgba(148, 163, 184, .2); margin-top: 48px; padding: 22px 0 100px; font-size: .88rem; }
+  @media (max-width: 960px) { .footer__grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,31 @@
+---
+// Sayfanın her yerinde görünen sabit Ara / WhatsApp butonları
+import Icon from './Icon.astro';
+import { telLink, whatsappLink } from '../data/site';
+---
+<div class="fab">
+  <a class="fab__btn fab__tel" href={telLink} aria-label="Hemen ara"><Icon name="phone" size={22} /><span>Ara</span></a>
+  <a class="fab__btn fab__wa" href={whatsappLink} target="_blank" rel="noopener" aria-label="WhatsApp ile yaz">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3 2.4 1 2.9.8 3.4.7.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3ZM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+</div>
+
+<style>
+  .fab { position: fixed; right: 20px; bottom: 20px; z-index: 60; display: flex; flex-direction: column; gap: 12px; }
+  .fab__btn { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; color: #fff; box-shadow: 0 12px 28px -8px rgba(0, 0, 0, .35); transition: transform .2s; }
+  .fab__btn:hover { transform: scale(1.08); }
+  .fab__btn span { display: none; }
+  .fab__tel { background: var(--teal-600); }
+  .fab__wa { background: var(--wa); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, .55); } 70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+  /* Mobilde alt kısma tam genişlik bar */
+  @media (max-width: 640px) {
+    .fab { left: 0; right: 0; bottom: 0; flex-direction: row; gap: 0; }
+    .fab__btn { flex: 1; width: auto; height: 60px; border-radius: 0; display: flex; gap: 8px; justify-content: center; align-items: center; font-weight: 700; box-shadow: none; animation: none; }
+    .fab__btn span { display: inline; }
+    .fab__btn:hover { transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fab__wa { animation: none; } }
+</style>

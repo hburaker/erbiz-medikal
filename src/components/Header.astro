@@ -1,0 +1,86 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, site, telLink } from '../data/site';
+---
+<div class="topbar">
+  <div class="container topbar__in">
+    <span><span class="dot"></span> {site.hours} · Acil ihtiyaçlarınız için hemen arayın</span>
+    <a href={telLink}><Icon name="phone" size={14} /> {site.phoneDisplay}</a>
+  </div>
+</div>
+
+<header class="header" id="top">
+  <div class="container header__in">
+    <a href="#top" aria-label={`${site.name} ana sayfa`}><Logo /></a>
+
+    <nav class="nav" id="nav" aria-label="Ana menü">
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      <a class="btn btn--primary nav__cta" href={telLink}><Icon name="phone" size={18} /> Hemen Ara</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Menüyü aç" aria-expanded="false" aria-controls="nav">
+      <Icon name="menu" class="i-menu" />
+      <Icon name="close" class="i-close" />
+    </button>
+  </div>
+</header>
+
+<script>
+  const burger = document.getElementById('burger')!;
+  const nav = document.getElementById('nav')!;
+  const toggle = (open: boolean) => {
+    nav.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', () => toggle(!nav.classList.contains('is-open')));
+  nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => toggle(false)));
+
+  const header = document.querySelector('.header')!;
+  addEventListener('scroll', () => header.classList.toggle('is-scrolled', scrollY > 10), { passive: true });
+</script>
+
+<style>
+  .topbar { background: var(--navy); color: #cbd5e1; font-size: .85rem; }
+  .topbar__in { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; }
+  .topbar a { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-weight: 700; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--teal-300); margin-right: 4px; box-shadow: 0 0 0 0 rgba(94, 234, 212, .7); animation: ping 2s infinite; }
+  @keyframes ping { 70% { box-shadow: 0 0 0 8px rgba(94, 234, 212, 0); } 100% { box-shadow: 0 0 0 0 rgba(94, 234, 212, 0); } }
+
+  .header { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, .85); backdrop-filter: saturate(180%) blur(14px); border-bottom: 1px solid transparent; transition: border-color .2s, box-shadow .2s; }
+  .header.is-scrolled { border-color: var(--line); box-shadow: 0 6px 20px -16px rgba(11, 37, 69, .4); }
+  .header__in { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .nav { display: flex; align-items: center; gap: 28px; }
+  .nav a:not(.btn) { font-weight: 600; color: var(--navy-800); position: relative; }
+  .nav a:not(.btn)::after { content: ''; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0; background: var(--teal-500); transition: width .25s; }
+  .nav a:not(.btn):hover::after { width: 100%; }
+  .nav__cta { padding: .7rem 1.2rem; }
+  .burger { display: none; background: none; border: 0; color: var(--navy); cursor: pointer; padding: 8px; }
+
+  @media (max-width: 960px) {
+    .topbar__in > span { display: none; }
+    .topbar__in { justify-content: center; }
+    .burger { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--mint-50); color: var(--teal-700); }
+    :global(.burger .i-close) { display: none; }
+    :global(.burger[aria-expanded="true"] .i-menu) { display: none; }
+    :global(.burger[aria-expanded="true"] .i-close) { display: block; }
+    /* Header backdrop-filter kullandığı için menü fixed değil, header'a göre absolute konumlanır */
+    .nav {
+      position: absolute; top: 100%; left: 0; right: 0; height: calc(100dvh - 76px); overflow-y: auto;
+      background: #fff; flex-direction: column; align-items: stretch; gap: 6px;
+      padding: 20px 16px 32px; border-top: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(11, 37, 69, .35);
+      opacity: 0; transform: translateY(-12px); visibility: hidden; transition: opacity .25s, transform .25s, visibility .25s;
+    }
+    .nav.is-open { opacity: 1; transform: none; visibility: visible; }
+    .nav a:not(.btn) {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px; border-radius: 14px; font-size: 1.1rem; font-weight: 700; color: var(--navy);
+      background: #fff; border: 1px solid var(--line); transition: background .2s, color .2s, border-color .2s;
+    }
+    .nav a:not(.btn)::after { content: '›'; position: static; width: auto; height: auto; background: none; color: var(--teal-600); font-size: 1.5rem; line-height: 1; }
+    .nav a:not(.btn):hover, .nav a:not(.btn):active { background: var(--mint-50); border-color: var(--teal-500); color: var(--teal-700); }
+    .nav__cta { margin-top: 14px; padding: 1rem; font-size: 1.05rem; }
+  }
+</style>

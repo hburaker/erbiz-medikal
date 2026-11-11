@@ -1,0 +1,72 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string }
+const { title = `${site.name} | Ankara Hasta Yatağı ve Medikal Ürün Kiralama, Satış`, description = site.description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  name: site.name,
+  url: site.url,
+  telephone: site.phone,
+  description: site.description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Kentkoop Mah. 1860. Cad. No: 27/A, Batıkent',
+    addressLocality: 'Yenimahalle',
+    addressRegion: 'Ankara',
+    postalCode: '06370',
+    addressCountry: 'TR',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.lat, longitude: site.lng },
+  areaServed: 'Ankara',
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '00:00',
+    closes: '23:59',
+  },
+  hasMap: site.mapsUrl,
+};
+---
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0b2545" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <slot />
+    <script>
+      // Bölümler ekrana girdikçe görünür olsun
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        }),
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

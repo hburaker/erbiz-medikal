@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { categories, telLink, site } from '../data/site';
+---
+<section class="section section--tint" id="urunler">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ürün Gruplarımız</span>
+      <h2>Aradığınız medikal ürün büyük ihtimalle bizde</h2>
+      <p>Evde bakımdan kliniğe, ortopediden sarf malzemesine kadar geniş bir ürün yelpazesi.</p>
+    </div>
+
+    <div class="grid cats">
+      {categories.map((c) => (
+        <div class="cat reveal">
+          <span class="icon-badge"><Icon name={c.icon} /></span>
+          <span>{c.title}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="more reveal">
+      <div>
+        <strong>Listede göremediğiniz bir ürün mü arıyorsunuz?</strong>
+        <p>Burada yalnızca ürün gruplarımızın bir kısmı yer alıyor. Bizi arayın, ihtiyacınızı hemen tedarik edelim.</p>
+      </div>
+      <a class="btn btn--primary" href={telLink}><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cats { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cat {
+    display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line);
+    border-radius: 16px; padding: 16px 18px; font-weight: 700; color: var(--navy);
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+  .cat:hover { border-color: var(--teal-500); box-shadow: var(--shadow); transform: translateY(-2px); }
+  .cat .icon-badge { flex: none; width: 44px; height: 44px; }
+  .more {
+    margin-top: 36px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    background: #fff; border: 1px dashed var(--teal-500); border-radius: 20px; padding: 24px 28px;
+  }
+  .more strong { color: var(--navy); font-size: 1.1rem; }
+  .more p { color: var(--muted); margin-top: 4px; }
+  @media (max-width: 1000px) { .cats { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 760px) { .cats { grid-template-columns: repeat(2, 1fr); } .more { flex-direction: column; align-items: flex-start; } }
+  @media (max-width: 440px) { .cats { grid-template-columns: 1fr; } .more .btn { width: 100%; } }
+</style>

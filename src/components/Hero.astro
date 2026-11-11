@@ -1,0 +1,96 @@
+---
+import Icon from './Icon.astro';
+import { site, telLink, whatsappLink } from '../data/site';
+---
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="container hero__in">
+    <div class="hero__text">
+      <span class="eyebrow">Ankara · 7/24 Medikal Destek</span>
+      <h1>Hasta yatağından oksijen cihazına, <span class="hl">aynı gün kapınızda.</span></h1>
+      <p class="lead">
+        Hasta karyolası, havalı yatak, oksijen konsantratörü, CPM ve tekerlekli sandalyede{' '}
+        <strong>kiralama ve satış</strong>. Ankara’nın her yerine ücretsiz teslimat, kurulum ve kullanım eğitimi.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href={telLink}><Icon name="phone" size={20} /> {site.phoneDisplay}</a>
+        <a class="btn btn--wa" href={whatsappLink} target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3 2.4 1 2.9.8 3.4.7.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3ZM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+          WhatsApp’tan Yaz
+        </a>
+      </div>
+      <ul class="hero__trust">
+        <li><Icon name="check" size={18} /> Aynı gün ücretsiz kurulum</li>
+        <li><Icon name="check" size={18} /> {site.experienceYears}+ yıl tecrübe</li>
+        <li><Icon name="check" size={18} /> Dezenfekte, bakımlı ürünler</li>
+      </ul>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <div class="orb">
+        <svg viewBox="0 0 320 320" class="orb__svg">
+          <defs>
+            <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#14b8a6" />
+              <stop offset="1" stop-color="#0e7490" />
+            </linearGradient>
+          </defs>
+          <circle cx="160" cy="160" r="150" fill="url(#hg)" opacity=".12" />
+          <circle cx="160" cy="160" r="110" fill="url(#hg)" opacity=".18" />
+          <path d="M130 70h60a8 8 0 0 1 8 8v44h44a8 8 0 0 1 8 8v60a8 8 0 0 1-8 8h-44v44a8 8 0 0 1-8 8h-60a8 8 0 0 1-8-8v-44H78a8 8 0 0 1-8-8v-60a8 8 0 0 1 8-8h44V78a8 8 0 0 1 8-8Z" fill="url(#hg)" />
+          <path class="ecg" d="M84 160h46l14-30 22 60 14-30h56" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <div class="float float--1">
+        <span class="icon-badge"><Icon name="truck" /></span>
+        <div><strong>Aynı gün teslimat</strong><small>Ankara geneli</small></div>
+      </div>
+      <div class="float float--2">
+        <span class="icon-badge"><Icon name="clock" /></span>
+        <div><strong>7/24 açık</strong><small>Gece & hafta sonu</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; padding: clamp(48px, 7vw, 96px) 0 clamp(64px, 8vw, 110px); }
+  .hero__bg {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(60% 60% at 85% 20%, rgba(20, 184, 166, .18), transparent 70%),
+      radial-gradient(50% 50% at 0% 100%, rgba(14, 116, 144, .12), transparent 70%),
+      linear-gradient(180deg, #f6fbff, #fff);
+  }
+  .hero__in { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  .hero__text { display: grid; gap: 22px; justify-items: start; }
+  h1 { font-size: clamp(2.1rem, 5vw, 3.6rem); font-weight: 800; }
+  .hl { background: linear-gradient(90deg, var(--teal-600), #0e7490); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--muted); max-width: 560px; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero__trust { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--navy-800); font-weight: 600; font-size: .95rem; }
+  .hero__trust li { display: inline-flex; align-items: center; gap: 6px; }
+  .hero__trust :global(svg) { color: var(--teal-600); }
+
+  .hero__visual { position: relative; display: grid; place-items: center; min-height: 380px; }
+  .orb { width: min(100%, 400px); animation: floaty 6s ease-in-out infinite; }
+  .ecg { stroke-dasharray: 320; stroke-dashoffset: 320; animation: draw 2.6s ease-in-out infinite; }
+  @keyframes draw { 0% { stroke-dashoffset: 320; } 55%, 100% { stroke-dashoffset: 0; } }
+  @keyframes floaty { 50% { transform: translateY(-10px); } }
+
+  .float { position: absolute; display: flex; align-items: center; gap: 12px; background: #fff; padding: 12px 16px 12px 12px; border-radius: 16px; box-shadow: var(--shadow-lg); }
+  .float strong { display: block; color: var(--navy); font-size: .95rem; }
+  .float small { color: var(--muted); }
+  .float--1 { left: 0; bottom: 14%; }
+  .float--2 { right: 0; top: 10%; }
+
+  @media (max-width: 900px) {
+    .hero__in { grid-template-columns: 1fr; }
+    .hero__visual { min-height: 300px; order: -1; display: none; }
+  }
+  @media (max-width: 520px) {
+    .hero__cta { flex-direction: column; width: 100%; }
+    .hero__cta .btn { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .orb, .ecg { animation: none; stroke-dashoffset: 0; } }
+</style>

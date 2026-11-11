@@ -1,0 +1,62 @@
+---
+import Icon from './Icon.astro';
+import { rentals, steps, whatsappLink } from '../data/site';
+---
+<section class="section" id="kiralama">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Kiralama & Satış</span>
+      <h2>En çok ihtiyaç duyulan ürünler</h2>
+      <p>Kısa süreli ihtiyaçlarınız için kiralayın, uzun vadede kullanacaksanız uygun fiyatla satın alın.</p>
+    </div>
+
+    <div class="grid rentals">
+      {rentals.map((r) => (
+        <article class="card rental reveal">
+          <span class="icon-badge"><Icon name={r.icon} size={26} /></span>
+          <h3>{r.title}</h3>
+          <p>{r.desc}</p>
+          <div class="rental__tags"><span>Kiralık</span><span>Satılık</span></div>
+          <a class="rental__link" href={`${whatsappLink.split('?')[0]}?text=${encodeURIComponent(`Merhaba, ${r.title} için fiyat bilgisi almak istiyorum.`)}`} target="_blank" rel="noopener">
+            Fiyat sor <Icon name="arrow" size={18} />
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div class="process reveal">
+      <h3>Nasıl çalışıyoruz?</h3>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li>
+            <span class="num">{i + 1}</span>
+            <strong>{s.title}</strong>
+            <p>{s.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rentals { grid-template-columns: repeat(4, 1fr); }
+  .rental { display: flex; flex-direction: column; gap: 14px; }
+  .rental h3 { font-size: 1.2rem; }
+  .rental p { color: var(--muted); font-size: .95rem; flex: 1; }
+  .rental__tags { display: flex; gap: 8px; }
+  .rental__tags span { font-size: .75rem; font-weight: 700; padding: .25rem .6rem; border-radius: 999px; background: var(--sky-50); color: var(--navy-800); }
+  .rental__link { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--teal-700); }
+  .rental__link:hover { gap: 10px; }
+
+  .process { margin-top: 64px; background: var(--navy); color: #cbd5e1; border-radius: 28px; padding: clamp(28px, 4vw, 48px); }
+  .process h3 { color: #fff; font-size: 1.5rem; margin-bottom: 28px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  .steps li { display: grid; gap: 8px; position: relative; }
+  .steps strong { color: #fff; font-size: 1.05rem; }
+  .steps p { font-size: .93rem; }
+  .num { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; background: var(--teal-500); color: var(--navy); }
+
+  @media (max-width: 1000px) { .rentals, .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .rentals, .steps { grid-template-columns: 1fr; } }
+</style>

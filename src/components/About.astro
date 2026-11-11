@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+<section class="section" id="hakkimizda">
+  <div class="container about">
+    <div class="about__stats reveal">
+      <div class="stat stat--big"><strong>{site.experienceYears}+</strong><span>yıllık sektör tecrübesi</span></div>
+      <div class="stat"><strong>7/24</strong><span>kesintisiz destek</span></div>
+      <div class="stat"><strong>Aynı gün</strong><span>teslimat ve kurulum</span></div>
+      <div class="stat"><strong>Tüm Ankara</strong><span>hizmet bölgesi</span></div>
+    </div>
+
+    <div class="about__text reveal">
+      <span class="eyebrow">Hakkımızda</span>
+      <h2>Tecrübeli bir ekip, güvenilir bir medikal çözüm ortağı</h2>
+      <p>
+        Erbiz Medikal olarak {site.experienceYears} yılı aşkın süredir medikal sektörde hizmet veren deneyimli bir ekibiz.
+        Hasta yatağından oksijen konsantratörüne, ortopedik ürünlerden sarf malzemelerine kadar evde bakım ve klinik
+        ihtiyaçlarınızı tek noktadan karşılıyoruz.
+      </p>
+      <p>
+        İşimizi iyi yapmanın; doğru ürünü önermek, zamanında teslim etmek ve teslimattan sonra da yanınızda olmak
+        olduğuna inanıyoruz. Bu yüzden her siparişte aynı gün kurulum yapıyor, kullanımı bizzat gösteriyor ve
+        7/24 ulaşılabilir kalıyoruz. Hastanız ve sizin için en doğru çözümü bulana kadar durmuyoruz.
+      </p>
+      <ul>
+        <li><Icon name="check" size={20} /> Uzman kadro ile doğru ürün yönlendirmesi</li>
+        <li><Icon name="check" size={20} /> Bakımlı, dezenfekte edilmiş kiralık ürünler</li>
+        <li><Icon name="check" size={20} /> Satış sonrası teknik destek ve garanti</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: center; }
+  .about__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat { background: var(--sky-50); border-radius: 20px; padding: 26px; display: grid; gap: 4px; }
+  .stat strong { font-size: 1.7rem; font-weight: 800; color: var(--navy); letter-spacing: -.02em; }
+  .stat span { color: var(--muted); font-weight: 500; }
+  .stat--big { grid-column: span 2; background: linear-gradient(135deg, var(--teal-600), #0e7490); }
+  .stat--big strong { font-size: 3.4rem; color: #fff; }
+  .stat--big span { color: #ccfbf1; font-size: 1.05rem; }
+  .about__text { display: grid; gap: 18px; justify-items: start; }
+  .about__text h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); }
+  .about__text p { color: var(--muted); font-size: 1.04rem; }
+  .about__text ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-weight: 600; color: var(--navy-800); }
+  .about__text li { display: flex; gap: 10px; align-items: center; }
+  .about__text li :global(svg) { color: var(--teal-600); flex: none; }
+  @media (max-width: 900px) { .about { grid-template-columns: 1fr; } .about__stats { order: 2; } }
+</style>

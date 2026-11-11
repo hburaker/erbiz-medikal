@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import { site, telLink, whatsappLink } from '../data/site';
+const mapEmbed = `https://www.google.com/maps?q=${site.lat},${site.lng}&z=16&output=embed`;
+---
+<section class="cta">
+  <div class="container cta__in reveal">
+    <div>
+      <h2>Ankara’nın her yerine aynı gün ücretsiz kurulum!</h2>
+      <p>Hastanız için ihtiyacınız olan ürünü şimdi söyleyin, bugün kapınızda olsun.</p>
+    </div>
+    <div class="cta__btns">
+      <a class="btn btn--white" href={telLink}><Icon name="phone" size={20} /> Hemen Arayın</a>
+      <a class="btn btn--wa" href={whatsappLink} target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="iletisim">
+  <div class="container contact">
+    <div class="contact__info reveal">
+      <span class="eyebrow">İletişim</span>
+      <h2>Bize ulaşın</h2>
+      <p class="sub">Telefon ve WhatsApp hattımız 7 gün 24 saat açık. Mağazamıza da bekleriz.</p>
+
+      <a class="row" href={telLink}>
+        <span class="icon-badge"><Icon name="phone" /></span>
+        <span><small>Telefon & WhatsApp</small><strong>{site.phoneDisplay}</strong></span>
+      </a>
+      <a class="row" href={site.mapsUrl} target="_blank" rel="noopener">
+        <span class="icon-badge"><Icon name="pin" /></span>
+        <span><small>Adres</small><strong>{site.address}</strong></span>
+      </a>
+      <div class="row">
+        <span class="icon-badge"><Icon name="clock" /></span>
+        <span><small>Çalışma saatleri</small><strong>{site.hours}</strong></span>
+      </div>
+      <a class="btn btn--ghost" href={site.mapsUrl} target="_blank" rel="noopener">Yol tarifi al <Icon name="arrow" size={18} /></a>
+    </div>
+
+    <div class="map reveal">
+      <iframe
+        src={mapEmbed}
+        title={`${site.name} konumu`}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { padding: 0 0 8px; }
+  .cta__in {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    background: linear-gradient(120deg, var(--teal-600), #0e7490 60%, var(--navy));
+    border-radius: 28px; padding: clamp(28px, 4vw, 52px); color: #e0f2f1;
+  }
+  .cta h2 { color: #fff; font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 8px; }
+  .cta__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .contact { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: stretch; }
+  .contact__info { display: grid; gap: 16px; align-content: start; justify-items: start; }
+  .contact__info h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); }
+  .sub { color: var(--muted); }
+  .row { display: flex; gap: 14px; align-items: center; width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--line); }
+  a.row:hover { border-color: var(--teal-500); }
+  .row .icon-badge { flex: none; }
+  .row small { display: block; color: var(--muted); font-weight: 600; }
+  .row strong { color: var(--navy); }
+  .map { border-radius: 24px; overflow: hidden; border: 1px solid var(--line); min-height: 380px; box-shadow: var(--shadow); }
+  .map iframe { width: 100%; height: 100%; min-height: 380px; border: 0; }
+  @media (max-width: 900px) {
+    .cta__in { flex-direction: column; align-items: flex-start; }
+    .contact { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) { .cta__btns { width: 100%; flex-direction: column; } .cta__btns .btn { width: 100%; } }
+</style>
