@@ -1,0 +1,205 @@
+---
+// Hizmet açılış sayfaları: /hasta-yatagi-kiralama-ankara/ vb. İçerik: src/data/services.ts
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingContact from '../components/FloatingContact.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import { site, telLink, waLink, ankaraIlceleri, features } from '../data/site';
+import { services, type Service } from '../data/services';
+import { serviceNode, faqNode, breadcrumbNode, serviceUrl } from '../data/schema';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+interface Props { service: Service }
+const { service: s } = Astro.props;
+
+const waHref = waLink(s.whatsappText);
+// "CPM Cihazı" → "CPM cihazı", "Hasta Yatağı" → "hasta yatağı" (kısaltmalar büyük kalır)
+const lowerName = s.name.split(' ').map((w) => (w === w.toLocaleUpperCase('tr') ? w : w.toLocaleLowerCase('tr'))).join(' ');
+// Cümle başı: "Hasta yatağı", "CPM cihazı"
+const sentenceName = lowerName.charAt(0).toLocaleUpperCase('tr') + lowerName.slice(1);
+const others = services.filter((o) => o.slug !== s.slug);
+const crumbs = [
+  { name: 'Ana Sayfa', url: `${site.url}/` },
+  { name: `${s.name} Kiralama`, url: serviceUrl(s) },
+];
+---
+<Layout
+  title={s.metaTitle}
+  description={s.metaDescription}
+  keywords={s.keywords}
+  schema={[serviceNode(s), faqNode(s.faqs, serviceUrl(s)), breadcrumbNode(crumbs, serviceUrl(s))]}
+  pageExtras={{ mainEntity: { '@id': `${serviceUrl(s)}#service` }, breadcrumb: { '@id': `${serviceUrl(s)}#breadcrumb` } }}
+>
+  <Header />
+  <main>
+    <section class="svc-hero">
+      <div class="container">
+        <nav class="crumbs" aria-label="Sayfa konumu">
+          <ol>
+            <li><a href="/">Ana Sayfa</a></li>
+            <li aria-current="page">{s.name} Kiralama</li>
+          </ol>
+        </nav>
+        <div class="svc-hero__in">
+          <span class="icon-badge svc-hero__icon"><Icon name={s.icon} size={30} /></span>
+          <span class="eyebrow">{s.eyebrow}</span>
+          <h1>{s.h1}</h1>
+          <p class="lead">{s.lead}</p>
+          <div class="svc-hero__cta">
+            <a class="btn btn--primary" href={telLink}><Icon name="phone" size={20} /> {site.phoneDisplay}</a>
+            <a class="btn btn--wa" href={waHref} target="_blank" rel="noopener">WhatsApp’tan Fiyat Alın</a>
+          </div>
+          <ul class="trust">
+            <li><Icon name="check" size={18} /> Aynı gün ücretsiz teslimat ve kurulum</li>
+            <li><Icon name="check" size={18} /> 7/24 açık</li>
+            <li><Icon name="check" size={18} /> Kiralık ve satılık seçenek</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section svc-body">
+      <div class="container svc-layout">
+        <article class="prose">
+          {s.intro.map((p) => <p>{p}</p>)}
+          {s.sections.map((sec) => (
+            <section class="prose__sec">
+              <h2>{sec.h2}</h2>
+              {sec.paragraphs.map((p) => <p>{p}</p>)}
+              {sec.bullets.length > 0 && (
+                <ul>{sec.bullets.map((b) => <li><Icon name="check" size={18} /> <span>{b}</span></li>)}</ul>
+              )}
+            </section>
+          ))}
+        </article>
+
+        <aside class="side">
+          <div class="side__card">
+            <p class="side__title">{sentenceName} için hemen bilgi alın</p>
+            <p class="side__text">Telefon ve WhatsApp hattımız 7 gün 24 saat açık. İhtiyacınızı anlatın, size uygun modeli önerelim.</p>
+            <a class="btn btn--primary" href={telLink}><Icon name="phone" size={18} /> Hemen Arayın</a>
+            <a class="btn btn--wa" href={waHref} target="_blank" rel="noopener">WhatsApp</a>
+            <ul class="side__list">
+              {features.map((f) => <li><Icon name={f.icon} size={18} /> {f.title}</li>)}
+            </ul>
+            <p class="side__addr"><Icon name="pin" size={16} /> {site.address}</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="sss">
+      <div class="container svc-faq">
+        <div class="section-head">
+          <span class="eyebrow">Sık Sorulan Sorular</span>
+          <h2>{sentenceName} kiralama hakkında merak edilenler</h2>
+        </div>
+        <Faq items={s.faqs} />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="area">
+          <h2>Ankara’nın tüm ilçelerine aynı gün teslimat</h2>
+          <p>
+            Batıkent’teki mağazamızdan {ankaraIlceleri.join(', ')} olmak üzere Ankara’nın 25 ilçesinin tamamına
+            {lowerName} teslimatı ve kurulumu ücretsiz yapıyoruz.
+          </p>
+        </div>
+
+        <h2 class="others__title">Diğer kiralık medikal ürünlerimiz</h2>
+        <div class="grid others">
+          {others.map((o) => (
+            <a class="card other" href={`/${o.slug}/`}>
+              <span class="icon-badge"><Icon name={o.icon} /></span>
+              <span>{o.name} Kiralama</span>
+              <Icon name="arrow" size={18} />
+            </a>
+          ))}
+        </div>
+        <p class="others__all">
+          Ortez, korse, sarf malzemesi ve diğer ürün gruplarımız için <a href="/#urunler">tüm ürünlerimize göz atın</a>.
+        </p>
+      </div>
+    </section>
+
+    <CtaBand
+      title={`${sentenceName} için hemen arayın, bugün kapınızda olsun`}
+      text="Ankara’nın her yerine aynı gün ücretsiz teslimat, kurulum ve kullanım eğitimi."
+      waHref={waHref}
+    />
+  </main>
+  <Footer />
+  <FloatingContact />
+</Layout>
+
+<style>
+  .svc-hero {
+    padding: clamp(28px, 5vw, 48px) 0 clamp(48px, 7vw, 80px);
+    background:
+      radial-gradient(60% 60% at 85% 20%, rgba(20, 184, 166, .16), transparent 70%),
+      linear-gradient(180deg, #f6fbff, #fff);
+  }
+  .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0 0 28px; font-size: .9rem; color: var(--muted); }
+  .crumbs li + li::before { content: '›'; margin-right: 6px; color: var(--teal-600); }
+  .crumbs a { color: var(--teal-700); font-weight: 600; }
+  .crumbs a:hover { text-decoration: underline; }
+  .svc-hero__in { display: grid; gap: 18px; justify-items: start; max-width: 780px; }
+  .svc-hero__icon { width: 60px; height: 60px; }
+  h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); font-weight: 800; }
+  .lead { font-size: 1.15rem; color: var(--muted); }
+  .svc-hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+  .trust { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; font-weight: 600; color: var(--navy-800); font-size: .95rem; }
+  .trust li { display: inline-flex; align-items: center; gap: 6px; }
+  .trust :global(svg) { color: var(--teal-600); }
+
+  .svc-body { padding-top: clamp(40px, 6vw, 72px); }
+  .svc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 56px; align-items: start; }
+  .prose { display: grid; gap: 18px; font-size: 1.05rem; color: #334155; }
+  .prose__sec { display: grid; gap: 14px; margin-top: 18px; }
+  .prose h2 { font-size: clamp(1.4rem, 2.6vw, 1.85rem); }
+  .prose ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .prose li { display: flex; gap: 10px; align-items: flex-start; }
+  .prose li :global(svg) { flex: none; margin-top: 4px; color: var(--teal-600); }
+
+  .side { position: sticky; top: 100px; }
+  .side__card { display: grid; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow); }
+  .side__title { font-weight: 800; color: var(--navy); font-size: 1.15rem; }
+  .side__text { color: var(--muted); font-size: .95rem; }
+  .side__list { list-style: none; padding: 14px 0 0; margin: 4px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: .93rem; font-weight: 600; color: var(--navy-800); }
+  .side__list li { display: flex; gap: 8px; align-items: center; }
+  .side__list :global(svg) { color: var(--teal-600); flex: none; }
+  .side__addr { display: flex; gap: 6px; align-items: flex-start; font-size: .85rem; color: var(--muted); }
+  .side__addr :global(svg) { flex: none; margin-top: 3px; color: var(--teal-600); }
+
+  .svc-faq { max-width: 860px; }
+
+  .area { background: var(--sky-50); border-radius: 24px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 10px; margin-bottom: 64px; }
+  .area h2 { font-size: clamp(1.35rem, 2.6vw, 1.8rem); }
+  .area p { color: var(--muted); }
+  .others__title { font-size: clamp(1.35rem, 2.6vw, 1.8rem); margin-bottom: 22px; }
+  .others { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .other { display: flex; align-items: center; gap: 12px; padding: 18px; font-weight: 700; color: var(--navy); }
+  .other .icon-badge { flex: none; width: 44px; height: 44px; }
+  .other > :global(svg:last-child) { margin-left: auto; flex: none; color: var(--teal-600); }
+  .others__all { margin-top: 22px; color: var(--muted); }
+  .others__all a { color: var(--teal-700); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 1000px) {
+    .svc-layout { grid-template-columns: 1fr; }
+    .side { position: static; }
+    .others { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .others { grid-template-columns: 1fr; }
+    .svc-hero__cta { width: 100%; flex-direction: column; }
+    .svc-hero__cta .btn { width: 100%; }
+  }
+</style>

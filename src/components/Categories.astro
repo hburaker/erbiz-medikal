@@ -11,7 +11,13 @@ import { categories, telLink, site } from '../data/site';
     </div>
 
     <div class="grid cats">
-      {categories.map((c) => (
+      {categories.map((c) => c.slug ? (
+        <a class="cat cat--link reveal" href={`/${c.slug}/`}>
+          <span class="icon-badge"><Icon name={c.icon} /></span>
+          <span>{c.title}</span>
+          <Icon name="arrow" size={18} class="cat__arrow" />
+        </a>
+      ) : (
         <div class="cat reveal">
           <span class="icon-badge"><Icon name={c.icon} /></span>
           <span>{c.title}</span>
@@ -22,7 +28,7 @@ import { categories, telLink, site } from '../data/site';
     <div class="more reveal">
       <div>
         <strong>Listede göremediğiniz bir ürün mü arıyorsunuz?</strong>
-        <p>Burada yalnızca ürün gruplarımızın bir kısmı yer alıyor. Bizi arayın, ihtiyacınızı hemen tedarik edelim.</p>
+        <p>Burada yalnızca ürün gruplarımızın bir kısmı yer alıyor. Bizi arayın, temin edip edemeyeceğimizi hemen söyleyelim.</p>
       </div>
       <a class="btn btn--primary" href={telLink}><Icon name="phone" size={18} /> {site.phoneDisplay}</a>
     </div>
@@ -38,6 +44,7 @@ import { categories, telLink, site } from '../data/site';
   }
   .cat:hover { border-color: var(--teal-500); box-shadow: var(--shadow); transform: translateY(-2px); }
   .cat .icon-badge { flex: none; width: 44px; height: 44px; }
+  .cat :global(.cat__arrow) { margin-left: auto; flex: none; color: var(--teal-600); }
   .more {
     margin-top: 36px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
     background: #fff; border: 1px dashed var(--teal-500); border-radius: 20px; padding: 24px 28px;

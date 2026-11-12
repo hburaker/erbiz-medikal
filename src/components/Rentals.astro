@@ -1,12 +1,12 @@
 ---
 import Icon from './Icon.astro';
-import { rentals, steps, whatsappLink } from '../data/site';
+import { rentals, steps, waLink } from '../data/site';
 ---
 <section class="section" id="kiralama">
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">Kiralama & Satış</span>
-      <h2>En çok ihtiyaç duyulan ürünler</h2>
+      <h2>Kiralık ve satılık medikal ürünler</h2>
       <p>Kısa süreli ihtiyaçlarınız için kiralayın, uzun vadede kullanacaksanız uygun fiyatla satın alın.</p>
     </div>
 
@@ -14,10 +14,11 @@ import { rentals, steps, whatsappLink } from '../data/site';
       {rentals.map((r) => (
         <article class="card rental reveal">
           <span class="icon-badge"><Icon name={r.icon} size={26} /></span>
-          <h3>{r.title}</h3>
+          <h3><a class="rental__title" href={`/${r.slug}/`}>{r.title} Kiralama</a></h3>
           <p>{r.desc}</p>
           <div class="rental__tags"><span>Kiralık</span><span>Satılık</span></div>
-          <a class="rental__link" href={`${whatsappLink.split('?')[0]}?text=${encodeURIComponent(`Merhaba, ${r.title} için fiyat bilgisi almak istiyorum.`)}`} target="_blank" rel="noopener">
+          <a class="rental__more" href={`/${r.slug}/`}>Detaylı bilgi</a>
+          <a class="rental__link" href={waLink(`Merhaba, ${r.title} için fiyat bilgisi almak istiyorum.`)} target="_blank" rel="noopener">
             Fiyat sor <Icon name="arrow" size={18} />
           </a>
         </article>
@@ -48,6 +49,9 @@ import { rentals, steps, whatsappLink } from '../data/site';
   .rental__tags span { font-size: .75rem; font-weight: 700; padding: .25rem .6rem; border-radius: 999px; background: var(--sky-50); color: var(--navy-800); }
   .rental__link { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--teal-700); }
   .rental__link:hover { gap: 10px; }
+  .rental__title:hover { color: var(--teal-700); }
+  .rental__more { align-self: flex-start; font-weight: 600; font-size: .92rem; color: var(--navy-800); text-decoration: underline; text-underline-offset: 3px; }
+  .rental__more:hover { color: var(--teal-700); }
 
   .process { margin-top: 64px; background: var(--navy); color: #cbd5e1; border-radius: 28px; padding: clamp(28px, 4vw, 48px); }
   .process h3 { color: #fff; font-size: 1.5rem; margin-bottom: 28px; }

@@ -1,0 +1,11 @@
+// Cloudflare Workers (statik varlıklar) yapılandırması.
+// "name", Cloudflare panelindeki Worker adıyla AYNI olmalı (Workers Builds isim farklıysa derlemeyi reddeder).
+{
+  "name": "yellow-water-03f0",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Olmayan bir adres istendiğinde boş yanıt yerine dist/404.html (404 durum koduyla) gösterilir
+    "not_found_handling": "404-page"
+  }
+}

@@ -1,36 +1,40 @@
 ---
 import '../styles/global.css';
+import { Font } from 'astro:assets';
 import { site } from '../data/site';
+import { services } from '../data/services';
+import { websiteNode, businessNode, webPageNode } from '../data/schema';
 
-interface Props { title?: string; description?: string }
-const { title = `${site.name} | Ankara Hasta Yatağı ve Medikal Ürün Kiralama, Satış`, description = site.description } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+  image?: string; // /public altındaki paylaşım görseli (1200x630)
+  imageAlt?: string;
+  noindex?: boolean; // 404 gibi dizine eklenmemesi gereken sayfalar
+  schema?: object[]; // sayfaya özel ek JSON-LD düğümleri (Service, FAQPage, BreadcrumbList...)
+  pageExtras?: object; // WebPage düğümüne eklenecek alanlar (mainEntity, breadcrumb)
+}
+const {
+  title = site.defaultTitle,
+  description = site.description,
+  keywords = site.keywords,
+  image = '/og-image.png',
+  imageAlt = `${site.name} – Ankara hasta yatağı ve medikal ürün kiralama`,
+  noindex = false,
+  schema = [],
+  pageExtras = {},
+} = Astro.props;
+
 const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(image, site.url).href;
 
-const schema = {
+const graph = {
   '@context': 'https://schema.org',
-  '@type': 'MedicalBusiness',
-  name: site.name,
-  url: site.url,
-  telephone: site.phone,
-  description: site.description,
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Kentkoop Mah. 1860. Cad. No: 27/A, Batıkent',
-    addressLocality: 'Yenimahalle',
-    addressRegion: 'Ankara',
-    postalCode: '06370',
-    addressCountry: 'TR',
-  },
-  geo: { '@type': 'GeoCoordinates', latitude: site.lat, longitude: site.lng },
-  areaServed: 'Ankara',
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    opens: '00:00',
-    closes: '23:59',
-  },
-  hasMap: site.mapsUrl,
+  '@graph': [websiteNode(), businessNode(services), webPageNode(canonical, title, description, pageExtras), ...schema],
 };
+// </script> kaçışı
+const jsonLd = JSON.stringify(graph).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="tr">
@@ -39,22 +43,43 @@ const schema = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+    {noindex
+      ? <meta name="robots" content="noindex, follow" />
+      : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+
+    <meta name="geo.region" content="TR-06" />
+    <meta name="geo.placename" content="Batıkent, Yenimahalle, Ankara" />
+    <meta name="geo.position" content={`${site.lat};${site.lng}`} />
+    <meta name="ICBM" content={`${site.lat}, ${site.lng}`} />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0b2545" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content={site.name} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <Font cssVariable="--font-jakarta" preload={[{ subset: 'latin', weight: 400 }, { subset: 'latin-ext', weight: 400 }]} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    {!noindex && <script type="application/ld+json" set:html={jsonLd} />}
+    <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
   </head>
   <body>
     <slot />

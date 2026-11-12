@@ -1,0 +1,37 @@
+---
+// Arama / WhatsApp çağrı bandı (ana sayfa ve hizmet sayfaları)
+import Icon from './Icon.astro';
+import { telLink, whatsappLink } from '../data/site';
+
+interface Props { title?: string; text?: string; waHref?: string }
+const {
+  title = 'Ankara’nın her yerine aynı gün ücretsiz kurulum!',
+  text = 'Hastanız için ihtiyacınız olan ürünü şimdi söyleyin, bugün kapınızda olsun.',
+  waHref = whatsappLink,
+} = Astro.props;
+---
+<section class="cta">
+  <div class="container cta__in reveal">
+    <div>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="cta__btns">
+      <a class="btn btn--white" href={telLink}><Icon name="phone" size={20} /> Hemen Arayın</a>
+      <a class="btn btn--wa" href={waHref} target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { padding: 0 0 8px; }
+  .cta__in {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    background: linear-gradient(120deg, var(--teal-600), #0e7490 60%, var(--navy));
+    border-radius: 28px; padding: clamp(28px, 4vw, 52px); color: #e0f2f1;
+  }
+  .cta h2 { color: #fff; font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 8px; }
+  .cta__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  @media (max-width: 900px) { .cta__in { flex-direction: column; align-items: flex-start; } }
+  @media (max-width: 520px) { .cta__btns { width: 100%; flex-direction: column; } .cta__btns .btn { width: 100%; } }
+</style>

@@ -1,13 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Logo from '../components/Logo.astro';
+import { services } from '../data/services';
+import { site, telLink } from '../data/site';
 ---
-<Layout title="Sayfa bulunamadı | Erbiz Medikal">
+<Layout title="Sayfa bulunamadı | Erbiz Medikal" description="Aradığınız sayfa bulunamadı. Erbiz Medikal ana sayfasına dönebilir veya 7/24 bizi arayabilirsiniz." noindex>
   <main style="min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px">
     <div style="display:grid;gap:18px;justify-items:center">
       <Logo />
       <h1 style="font-size:2.4rem">Aradığınız sayfa bulunamadı</h1>
-      <a class="btn btn--primary" href="/">Ana sayfaya dön</a>
+      <p style="color:var(--muted)">Adres değişmiş ya da yanlış yazılmış olabilir. Aradığınız ürün için 7/24 bize ulaşabilirsiniz.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+        <a class="btn btn--primary" href="/">Ana sayfaya dön</a>
+        <a class="btn btn--ghost" href={telLink}>{site.phoneDisplay}</a>
+      </div>
+      <ul style="list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center">
+        {services.map((sv) => <li><a style="color:var(--teal-700);font-weight:600" href={`/${sv.slug}/`}>{sv.name} Kiralama</a></li>)}
+      </ul>
     </div>
   </main>
 </Layout>

@@ -2,7 +2,8 @@
 import Icon from './Icon.astro';
 import { features } from '../data/site';
 ---
-<section class="features">
+<section class="features" aria-labelledby="neden-biz">
+  <h2 class="sr-only" id="neden-biz">Neden Erbiz Medikal?</h2>
   <div class="container grid features__grid">
     {features.map((f) => (
       <div class="feature reveal">

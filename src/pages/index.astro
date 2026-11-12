@@ -8,11 +8,14 @@ import Categories from '../components/Categories.astro';
 import About from '../components/About.astro';
 import Reviews from '../components/Reviews.astro';
 import Areas from '../components/Areas.astro';
+import CtaBand from '../components/CtaBand.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import FloatingContact from '../components/FloatingContact.astro';
+import { faqs, site } from '../data/site';
+import { faqNode } from '../data/schema';
 ---
-<Layout>
+<Layout schema={[faqNode(faqs, `${site.url}/`)]}>
   <Header />
   <main>
     <Hero />
@@ -22,6 +25,7 @@ import FloatingContact from '../components/FloatingContact.astro';
     <About />
     <Reviews />
     <Areas />
+    <CtaBand />
     <Contact />
   </main>
   <Footer />
